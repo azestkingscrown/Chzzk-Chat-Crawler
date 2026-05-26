@@ -31,7 +31,25 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 - **Linux**: 터미널을 열고 `./chzzk-chat-collector-linux` 를 입력하여 실행합니다. (권한이 없을 경우 `chmod +x` 필요)
 - **macOS**: 터미널을 열고 `./chzzk-chat-collector-macos` 를 입력하여 실행합니다.
 
-### 2. 스트리머 선택
+### 2. Android (Termux) 및 ARM 서버 환경
+Oracle Cloud ARM 서버나 안드로이드 스마트폰(Termux) 환경에서는 배포된 x64 실행 파일을 바로 사용할 수 없습니다. 이 경우 아래와 같이 소스 코드를 직접 구동하는 것을 권장합니다.
+
+```bash
+# 1. Node.js 및 Git 설치
+sudo apt install nodejs npm git  # 우분투/데비안 ARM 서버인 경우
+pkg install nodejs git           # 안드로이드 Termux인 경우
+
+# 2. 소스 코드 다운로드 및 의존성 설치
+git clone [이 저장소의 URL]
+cd Chzzk-Chat-Crawler
+npm install
+
+# 3. 프로그램 실행
+node index.js
+```
+> ARM 환경에서 독립된 `.exe` 형태의 실행 파일이 필요하신 경우, 해당 서버에서 `npm run build`를 실행하면 `dist` 폴더에 `chzzk-chat-collector-linux-arm64` 파일이 생성됩니다.
+
+### 3. 스트리머 선택
 프로그램이 켜지면 스트리머의 닉네임(예: `강소연`)을 입력합니다.
 검색 결과가 맞는지 확인(Y/n)하면 대기 또는 수집 모드로 진입합니다.
 
