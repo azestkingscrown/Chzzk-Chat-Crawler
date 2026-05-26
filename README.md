@@ -34,6 +34,7 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 - **Windows**: `chzzk-chat-collector-win.exe` 파일을 찾아 **더블클릭**합니다.
 - **Linux**: 터미널을 열고 `./chzzk-chat-collector-linux` 를 입력하여 실행합니다. (권한이 없을 경우 `chmod +x` 필요)
 - **macOS**: 터미널을 열고 `./chzzk-chat-collector-macos` 를 입력하여 실행합니다.
+- **Android**: Termux 환경에서도 정상 작동합니다. `git clone` 으로 저장 후 `npm install`로 의존성 설치 하여 `node index.js`로 사용하시면 됩니다.
 
 ### 2. 스트리머 선택
 프로그램이 켜지면 스트리머의 닉네임(예: `강소연`)을 입력합니다.
@@ -44,11 +45,11 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 `스트리머명_YYYYMMDD_HHMMSS.txt` 형식으로 채팅 내역이 실시간으로 저장됩니다.
 수집을 종료하고 싶다면 터미널에서 `Ctrl + C`를 누르시면 됩니다.
 
-## 💻 시스템 요구 사양 (권장 하드웨어)
+## 💻 시스템 조건 요구 사양 (권장 하드웨어)
 
 이 프로그램은 불필요한 GUI를 제거하고 최적화된 CLI(명령줄) 기반으로 동작하므로 극도로 가볍습니다. 저사양 미니 PC나 가상 머신(Tiny10 등)에서도 원활하게 24시간 구동이 가능합니다.
 
-- **OS**: Windows 10/11 (64bit), Linux, macOS
+- **OS**: Windows 10/11 (64bit), Linux, macOS, Android(Termux)
 - **CPU**: 1 Core, 1.0 GHz 이상 (채팅량이 매우 많은 대형 방송이라도 CPU 점유율은 1% 미만입니다.)
 - **RAM**: 512 MB 이상 (버퍼링 최적화가 되어 있어 보통 50~100MB 내외의 메모리만 사용합니다.)
 - **저장장치 (디스크)**: 
