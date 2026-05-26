@@ -26,18 +26,19 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 ## 🚀 사용 방법
 
 ### 1. 프로그램 실행
-운영체제에 맞는 버전을 다운로드하여 실행합니다.
-- **Windows**: `chzzk-chat-collector-win.exe` 파일을 찾아 **더블클릭**합니다.
-- **Linux**: 터미널을 열고 `./chzzk-chat-collector-linux` 를 입력하여 실행합니다. (권한이 없을 경우 `chmod +x` 필요)
-- **macOS**: 터미널을 열고 `./chzzk-chat-collector-macos` 를 입력하여 실행합니다.
+운영체제와 CPU 아키텍처(x64 / ARM64)에 맞는 버전을 다운로드하여 실행합니다.
+- **Windows**: `chzzk-chat-collector-win-x64.exe` (또는 `win-arm64.exe`) 파일을 찾아 **더블클릭**합니다.
+- **Linux**: 터미널을 열고 `./chzzk-chat-collector-linux-x64` (또는 `linux-arm64`) 를 입력하여 실행합니다. (권한 오류 시 `chmod +x` 필요)
+- **macOS**: 터미널을 열고 `./chzzk-chat-collector-macos-x64` (또는 `macos-arm64`) 를 입력하여 실행합니다.
 
-### 2. Android (Termux) 및 ARM 서버 환경
-Oracle Cloud ARM 서버나 안드로이드 스마트폰(Termux) 환경에서는 배포된 x64 실행 파일을 바로 사용할 수 없습니다. 이 경우 아래와 같이 소스 코드를 직접 구동하는 것을 권장합니다.
+### 2. Android (Termux) 환경 특수 구동
+Oracle Cloud 등의 일반적인 ARM 리눅스 서버는 위에서 제공하는 `linux-arm64` 파일을 그대로 사용하시면 됩니다. 
+하지만 **안드로이드 스마트폰(Termux)** 환경은 리눅스와 내부 구조(라이브러리)가 달라 배포된 실행 파일을 사용할 수 없습니다. 이 경우 아래와 같이 소스 코드를 직접 구동해 주세요.
 
 ```bash
-# 1. Node.js 및 Git 설치
-sudo apt install nodejs npm git  # 우분투/데비안 ARM 서버인 경우
-pkg install nodejs git           # 안드로이드 Termux인 경우
+# 1. Node.js 및 Git 설치 (Termux)
+pkg update && pkg upgrade
+pkg install nodejs git
 
 # 2. 소스 코드 다운로드 및 의존성 설치
 git clone [이 저장소의 URL]
@@ -47,7 +48,6 @@ npm install
 # 3. 프로그램 실행
 node index.js
 ```
-> ARM 환경에서 독립된 `.exe` 형태의 실행 파일이 필요하신 경우, 해당 서버에서 `npm run build`를 실행하면 `dist` 폴더에 `chzzk-chat-collector-linux-arm64` 파일이 생성됩니다.
 
 ### 3. 스트리머 선택
 프로그램이 켜지면 스트리머의 닉네임(예: `강소연`)을 입력합니다.
