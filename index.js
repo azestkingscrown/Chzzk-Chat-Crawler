@@ -14,6 +14,7 @@ const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 
 const API = {
     search:     (keyword) => `https://api.chzzk.naver.com/service/v1/search/channels?keyword=${encodeURIComponent(keyword)}&size=5`,
+    channel:    (id)      => `https://api.chzzk.naver.com/service/v1/channels/${id}`,
     liveDetail: (id)      => `https://api.chzzk.naver.com/service/v2/channels/${id}/live-detail`,
     liveStatus: (id)      => `https://api.chzzk.naver.com/polling/v2/channels/${id}/live-status`,
     chatToken:  (chatId)  => `https://comm-api.game.naver.com/nng_main/v1/chats/access-token?channelId=${chatId}&chatType=STREAMING`,
@@ -84,15 +85,15 @@ async function searchStreamer(keyword) {
     return null;
 }
 
-/** 채널 ID로 직접 정보 조회 (live-detail 이용) */
+/** 채널 ID로 직접 정보 조회 */
 async function getChannelByID(channelId) {
-    const { data } = await http.get(API.liveDetail(channelId));
-    if (data.code === 200 && data.content?.channel) {
-        const ch = data.content.channel;
+    const { data } = await http.get(API.channel(channelId));
+    if (data.code === 200 && data.content) {
+        const ch = data.content;
         return {
             channelId: ch.channelId || channelId,
             channelName: ch.channelName,
-            followerCount: ch.channelFollowerCount,
+            followerCount: ch.followerCount,
         };
     }
     return null;
