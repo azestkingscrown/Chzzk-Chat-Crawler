@@ -1,6 +1,6 @@
 {
   "name": "chzzk-chat-collector",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "치지직 실시간 채팅 수집기 - 스트리머 이름 검색 및 자동 방송 감지",
   "main": "index.js",

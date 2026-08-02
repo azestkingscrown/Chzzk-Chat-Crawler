@@ -456,7 +456,7 @@ async function startMonitoring(streamer, logUid = false) {
 async function main() {
     console.log(`
 ${C.cyan}${C.bold}╔══════════════════════════════════════════════╗
-║        치지직 실시간 채팅 수집기 v1.0        ║
+║        치지직 실시간 채팅 수집기 v1.2        ║
 ╚══════════════════════════════════════════════╝${C.reset}
 `);
 
