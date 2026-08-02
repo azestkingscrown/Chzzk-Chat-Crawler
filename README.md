@@ -6,7 +6,7 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 
 ## 실행 화면
 
-![Chzzk Chat Crawler 실행 화면](https://azestkingscrown.com/uploads/1780033844188-screenshot_2026-05-29_14-50-13.png)
+![Chzzk Chat Crawler 실행 화면](https://azestkingscrown.com/uploads/1785671016469-1000126199.jpg)
 
 ## ✨ 주요 기능
 
