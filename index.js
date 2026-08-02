@@ -186,6 +186,7 @@ function connectChat(chatChannelId, accessToken, callbacks) {
                         let msg = m.msg || '';
                         if (!msg && m.msgTypeCode) msg = '[이모티콘]';
                         callbacks.onChat?.({
+                            uid: profile.userIdHash || m.uid || '알 수 없음',
                             nickname: profile.nickname || '알 수 없음',
                             message: msg.replace(/\{:[^}]+:\}/g, '[이모티콘]'),
                         });
@@ -200,6 +201,7 @@ function connectChat(chatChannelId, accessToken, callbacks) {
                         const profile = JSON.parse(m.profile || '{}');
                         const extras = m.extras ? JSON.parse(m.extras) : {};
                         callbacks.onDonation?.({
+                            uid: profile.userIdHash || m.uid || '알 수 없음',
                             nickname: profile.nickname || '익명의 후원자',
                             message: (m.msg || '').replace(/\{:[^}]+:\}/g, '[이모티콘]'),
                             amount: extras.payAmount || 0,
@@ -259,7 +261,7 @@ class LogBuffer {
 
 // ===== 모니터링 & 수집 =====
 
-async function startMonitoring(streamer) {
+async function startMonitoring(streamer, logUid = false) {
     const { channelId, channelName } = streamer;
 
     log('모니터링', C.magenta,
@@ -332,16 +334,19 @@ async function startMonitoring(streamer) {
             onConnect() {
                 log('채팅', C.cyan, '채팅 서버 연결 완료 — 실시간 수집 중...\n');
             },
-            onChat({ nickname, message }) {
+            onChat({ uid, nickname, message }) {
                 const t = getUptime(liveInfo.openDate);
-                const line = `[${t}] ${nickname}: ${message}`;
-                console.log(`  ${C.gray}${t}${C.reset}  ${C.cyan}${nickname}${C.reset}: ${message}`);
+                const uidPart = logUid ? `[${uid}] ` : '';
+                const line = `[${t}] ${uidPart}${nickname}: ${message}`;
+                const consoleUid = logUid ? `${C.dim}(${uid})${C.reset} ` : '';
+                console.log(`  ${C.gray}${t}${C.reset}  ${consoleUid}${C.cyan}${nickname}${C.reset}: ${message}`);
                 logBuffer?.append(line);
                 msgCount++;
             },
-            onDonation({ nickname, message, amount }) {
+            onDonation({ uid, nickname, message, amount }) {
                 const t = getUptime(liveInfo.openDate);
-                const line = `[${t}] [💰후원 ${amount.toLocaleString()}원] ${nickname}: ${message}`;
+                const uidPart = logUid ? `[${uid}] ` : '';
+                const line = `[${t}] [💰후원 ${amount.toLocaleString()}원] ${uidPart}${nickname}: ${message}`;
                 console.log(`  ${C.yellow}${C.bold}${t}  [💰후원 ${amount.toLocaleString()}원] ${nickname}: ${message}${C.reset}`);
                 logBuffer?.append(line);
                 msgCount++;
@@ -382,6 +387,7 @@ async function startMonitoring(streamer) {
             `스트리머: ${channelName}`,
             `방송 제목: ${liveInfo.liveTitle || 'N/A'}`,
             `수집 시작: ${startTime.toLocaleString('ko-KR')}`,
+            `UID 기록: ${logUid ? '활성화' : '비활성화'}`,
             '='.repeat(50), '',
         ].join('\n');
         writeFileSync(logFile, header + '\n', 'utf8');
@@ -494,10 +500,21 @@ ${C.green}${C.bold}└───────────────────�
         }
     }
 
+    // ── UID 기록 여부 확인 ──
+    console.log(`
+${C.cyan}${C.bold}┌─ UID 기록 설정 ─────────────────────────────┐${C.reset}
+  사용자 고유 ID(UID)를 로그 파일에 기록할지
+  선택하세요. UID는 닉네임 변경 시에도 동일한
+  사용자를 식별할 수 있는 해시값입니다.
+${C.cyan}${C.bold}└─────────────────────────────────────────────┘${C.reset}`);
+    const uidAnswer = (await ask(rl, `${C.yellow}UID를 로그에 기록하시겠습니까? (y/N):${C.reset} `)).trim();
+    const logUid = uidAnswer.toLowerCase() === 'y';
+    log('설정', C.cyan, `UID 기록: ${logUid ? `${C.green}활성화` : `${C.dim}비활성화`}${C.reset}`);
+
     rl.close();
     console.log('');
 
-    await startMonitoring(streamer);
+    await startMonitoring(streamer, logUid);
 }
 
 main().catch(err => {
