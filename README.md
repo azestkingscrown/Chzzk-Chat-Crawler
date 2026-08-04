@@ -4,7 +4,7 @@
 
 Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows, Linux, macOS)에서 추가 설치 없이 즉시 실행 가능한 독립형 실행 파일(.exe 등) 형태로 패키징**되어 있어 누구나 쉽게 사용할 수 있습니다.
 
-## 실행 화면
+## 실행 화면 (Android Termux 환경)
 
 ![Chzzk Chat Crawler 실행 화면](https://azestkingscrown.com/uploads/1785671016469-1000126199.jpg)
 
