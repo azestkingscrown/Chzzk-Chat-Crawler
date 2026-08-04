@@ -60,7 +60,7 @@ pkg update && pkg upgrade
 pkg install nodejs git
 
 # 2. 소스 코드 다운로드 및 의존성 설치
-git clone [이 저장소의 URL]
+git clone https://github.com/azestkingscrown/Chzzk-Chat-Crawler.git
 cd Chzzk-Chat-Crawler
 npm install
 
