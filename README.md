@@ -147,7 +147,7 @@ npm run build:linux-arm64
 
 > [!NOTE]
 > **macOS 서명 자동화**: `npm run build` 실행 시 Mac 없이도 `rcodesign` 도구를 자동으로 다운로드하여
-> macOS 바이너리에 ad-hoc 서명을 적용합니다. Apple Silicon(M1/M2/M3)에서 실행하려면 반드시 서명이 필요합니다.
+> macOS 바이너리에 ad-hoc 서명을 적용합니다. Apple Silicon에서 실행하려면 반드시 서명이 필요합니다.
 
 ## 자주 묻는 질문 (FAQ)
 
