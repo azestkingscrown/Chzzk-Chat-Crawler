@@ -41,7 +41,7 @@ Node.js 환경을 기반으로 개발되었지만, **모든 운영체제(Windows
 | Linux | x64 | `chzzk-chat-collector-linux-x64` | `./chzzk-chat-collector-linux-x64` |
 | Linux | ARM64 | `chzzk-chat-collector-linux-arm64` | `./chzzk-chat-collector-linux-arm64` |
 | macOS | Intel | `chzzk-chat-collector-macos-x64` | `./chzzk-chat-collector-macos-x64` |
-| macOS | Apple Silicon (M1/M2/M3) | `chzzk-chat-collector-macos-arm64` | `./chzzk-chat-collector-macos-arm64` |
+| macOS | Apple Silicon | `chzzk-chat-collector-macos-arm64` | `./chzzk-chat-collector-macos-arm64` |
 
 > [!NOTE]
 > **Linux / macOS 권한 설정**: 처음 실행 시 권한 오류가 발생하면 아래 명령어로 실행 권한을 부여하세요.
