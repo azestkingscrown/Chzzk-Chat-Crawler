@@ -62,6 +62,31 @@ function ask(rl, question) {
     });
 }
 
+function parseJson(str) {
+    if (!str) return {};
+    if (typeof str === 'object') return str;
+    try {
+        const parsed = JSON.parse(str);
+        if (typeof parsed === 'string') {
+            try { return JSON.parse(parsed); } catch { return {}; }
+        }
+        return parsed || {};
+    } catch {
+        return {};
+    }
+}
+
+function parseAmount(extras, m) {
+    const raw = extras?.payAmount ?? extras?.pay_amount ?? extras?.amount ?? extras?.cheeseAmount ?? extras?.totalPayAmount ?? extras?.donationAmount ?? extras?.params?.payAmount ?? m?.payAmount ?? m?.amount ?? 0;
+    if (typeof raw === 'number') return raw;
+    if (typeof raw === 'string') {
+        const cleaned = raw.replace(/,/g, '').trim();
+        const num = Number(cleaned);
+        return isNaN(num) ? 0 : num;
+    }
+    return 0;
+}
+
 // ===== HTTP 클라이언트 =====
 const http = axios.create({
     timeout: 8000,
@@ -182,14 +207,30 @@ function connectChat(chatChannelId, accessToken, callbacks) {
             if (data.cmd === 93101 && Array.isArray(data.bdy)) {
                 for (const m of data.bdy) {
                     try {
-                        const profile = JSON.parse(m.profile || '{}');
+                        const profile = parseJson(m.profile);
+                        const extras = parseJson(m.extras);
+                        const amount = parseAmount(extras, m);
+
                         let msg = m.msg || '';
                         if (!msg && m.msgTypeCode) msg = '[이모티콘]';
-                        callbacks.onChat?.({
-                            uid: profile.userIdHash || m.uid || '알 수 없음',
-                            nickname: profile.nickname || '알 수 없음',
-                            message: msg.replace(/\{:[^}]+:\}/g, '[이모티콘]'),
-                        });
+                        const cleanMsg = msg.replace(/\{:[^}]+:\}/g, '[이모티콘]');
+                        const uid = profile.userIdHash || m.uid || '알 수 없음';
+                        const nickname = profile.nickname || '알 수 없음';
+
+                        if (amount > 0) {
+                            callbacks.onDonation?.({
+                                uid,
+                                nickname: profile.nickname || '익명의 후원자',
+                                message: cleanMsg,
+                                amount,
+                            });
+                        } else {
+                            callbacks.onChat?.({
+                                uid,
+                                nickname,
+                                message: cleanMsg,
+                            });
+                        }
                     } catch { /* 파싱 실패 건 스킵 */ }
                 }
             }
@@ -198,13 +239,15 @@ function connectChat(chatChannelId, accessToken, callbacks) {
             if (data.cmd === 93102 && Array.isArray(data.bdy)) {
                 for (const m of data.bdy) {
                     try {
-                        const profile = JSON.parse(m.profile || '{}');
-                        const extras = m.extras ? JSON.parse(m.extras) : {};
+                        const profile = parseJson(m.profile);
+                        const extras = parseJson(m.extras);
+                        const amount = parseAmount(extras, m);
+
                         callbacks.onDonation?.({
                             uid: profile.userIdHash || m.uid || '알 수 없음',
                             nickname: profile.nickname || '익명의 후원자',
                             message: (m.msg || '').replace(/\{:[^}]+:\}/g, '[이모티콘]'),
-                            amount: extras.payAmount || 0,
+                            amount,
                         });
                     } catch { /* 파싱 실패 건 스킵 */ }
                 }
@@ -456,7 +499,7 @@ async function startMonitoring(streamer, logUid = false) {
 async function main() {
     console.log(`
 ${C.cyan}${C.bold}╔══════════════════════════════════════════════╗
-║        치지직 실시간 채팅 수집기 v1.2        ║
+║        치지직 실시간 채팅 수집기 v1.2.1      ║
 ╚══════════════════════════════════════════════╝${C.reset}
 `);
 
